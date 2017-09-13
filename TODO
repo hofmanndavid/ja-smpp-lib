@@ -1,0 +1,9 @@
+1. Maybe we can use an 0bjectPool for the creation of SynchronousQueue<Command> instances 
+	when using sendSync
+
+2. Improve syncronization of ( what should be a compound object ): 
+	SMPPClient.sequenceNumberGenerator 
+	SMPPClient.seq_syncQueue 
+	
+3. For ussd, check Ussd_Operation_Code for creating a new thread or asume that an existing one already exists
+4. Implement graceful shutdown on dispatcher interruption ...

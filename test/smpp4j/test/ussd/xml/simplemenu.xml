@@ -1,0 +1,88 @@
+<menu name="LLAMPAQ">
+
+	<ext-action-fallback-msg>
+		<msg code="1">OK</msg>
+		<msg code="2">c3</msg>
+		<msg code="3">NOK
+UNKNOWN MESSAGE.</msg>
+	</ext-action-fallback-msg>
+
+	<load-codes><url fallback-code="2">http://localhost:8080/codes</url></load-codes>
+<!-- 
+*739                #744040016380252#595971110799#595981499002#744#04#1002#10012#
+*739*2*3239726*3*1*1#744040016380252#595971110799#595981499002#744#04#1002#10012#
+-->
+	<entry id="root">
+		<before><url fallback-code="1">asdf</url></before> <!-- msisdn, and all collected codes will be passed... -->
+		<msg code="rootcode"> <!-- opcion list will be concatenated and auto numbered, can have code -->
+			<op id="0">Menu Princip.</op>
+			<op id="1"                   >Op1 back</op> <!--any --> 
+			<op id="2" requires-code="c2">Op2 final</op> <!-- code stored in set -->
+			<op id="3" requires-code="c3">Op3 after</op> <!-- code stored in set -->
+		</msg>
+		<act>
+			<sel-if id="1">
+				<set key="oferta">CODE</set>
+				<navigate entry="op1"/>
+			</sel-if>
+			<sel-if id="2"><navigate entry="op2"/></sel-if>
+			<sel-if id="3"><navigate entry="op3"/></sel-if>
+			<sel-if id="*"><navigate entry="opn"/></sel-if>
+		</act>
+	</entry>
+	<entry id="op1">
+		<msg code="nroci">Ingrese nro de cedula</msg>
+		<act>
+			<navigate entry="op1.1"/>
+		</act>
+	</entry>
+
+	<entry id="op1.1">
+		<msg code="op1code">1. Confirmar
+2. Cancelar
+3. Atras</msg>
+		<act>
+			<val-if test-val="1"><navigate entry="op1.1.1"/></val-if>
+			<val-if test-val="2"><navigate entry="op1.1.2"/></val-if>
+			<val-if test-val="3"><navigate entry="root"/></val-if>
+		</act>
+	</entry>
+	
+	<entry id="op1.1.1">
+		<msg code="op1.1.1">Confirmado, reconfirmamena</msg>
+		<!-- after, si no se reconfirma == 1, mostrar error-->
+		<act>
+			<navigate entry="ultimo" />
+		</act>
+	</entry>
+	<entry id="ultimo">
+		<msg code=".">Super confirmado</msg>
+	</entry>
+	<entry id="op1.1.2">
+
+		<msg code="op1.1.2">Cancelado</msg>
+	</entry>
+	
+	<entry id="op2">
+		<msg code="op2">msg final</msg>
+	</entry>
+	
+	<entry id="op3">
+		<msg code="nrocontrato">Ingrese nro de contrato</msg>
+		<after><url fallback-code="3">http://localhost:8080/ussd/opsel</url></after>
+		<act>
+			<navigate entry="op3.1"/>
+		</act>
+	</entry>
+	<entry id="op3.1">
+		<msg code="op3.1">Gracias pro participar de la encuesta</msg>
+	</entry>
+	
+	<entry id="opn">
+		<msg>parece que no sabes usar ussd</msg>
+		<act>
+			<navigate entry="root" />
+		</act>
+	</entry>
+
+</menu>

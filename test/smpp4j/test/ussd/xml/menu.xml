@@ -1,0 +1,56 @@
+<menu name="LLAMPAQ">
+	
+	<load-codes> <url>http://...</url> </load-codes>
+
+	<entry id="root">
+		<msg> <!-- opcion list will be concatenated and auto numbered, can have code -->
+			<op id="1" requires-code=""  >Sin Saldo</op> <!--any -->
+			<op id="2" requires-code="S6">Mensajes por cobrar</op> <!-- code stored in set -->
+		</msg>
+		<act>
+			<sel-if id="1"><navigate entry="sinsaldo.ci"/></sel-if>
+			<sel-if id="2"><navigate entry="mspc.conf"/></sel-if>
+		</act>
+	</entry>
+
+	<entry id="sinsaldo.ci">
+		<before><url>http://...</url></before> <!-- validar con mnu final si no pasa validacion -->
+		<msg code="ci">Ingrese CI</msg> <!-- ci is key in hashmap -->
+		<after><url>http://...</url></after> <!-- validar con mnu final si no pasa validacion -->
+		<act>
+			<navigate navigate="sinsaldo.dest" />
+		</act>
+	</entry>
+
+	<entry id="sinsaldo.dest">
+		<msg code="dest">Ingrese nroDest</msg> <!-- dest is key in hashmap -->
+		<act>
+			<navigate navigate="sinsaldo.confirm" />
+		</act>
+	</entry>
+
+	<entry id="sinsaldo.confirm">
+		<msg><url>http://localhost/ussdConfirm?$$$</url></msg> <!-- confirm with special message,
+		                                                       maybe something balance related -->
+		<!-- as there is no other thing to do after this <after> tag, then the get body is returned as final msg -->
+		<after><url>http://...</url></after> <!-- validar con mnu final si no pasa validacion -->
+
+		<!-- or something like 
+		<act>
+			<val-if val="0"><navigate entry="back"/></val-if>
+			<val-if val="1"><navigate entry="sinsaldo.lastEntry"/></val-if>
+		</act>
+		-->
+	</entry>
+	<entry id="sinsaldo.lastEntry">
+		<msg>Gracias por suscribirte a ...</msg> 
+		<!-- as there is no other thing to do after sending this message then it is final -->
+	</entry>
+	
+	<entry id="mspc.conf">
+		<msg >Ingrese nro destino</msg>
+		<act>
+			<navigte entry=" " />
+		</act>
+	</entry>
+</menu>
